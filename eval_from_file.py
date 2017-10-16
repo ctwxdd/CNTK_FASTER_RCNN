@@ -47,6 +47,6 @@ if __name__ == '__main__':
 
     for i in range(2):
         a = input("filename:")
-        plot_test_file_results(evaluator, 'D:\\src\\Faster_RCNN\\test_img\\' + a, 'D:\\src\\Faster_RCNN\\test_img\\', cfg)
+        plot_test_file_results(evaluator, 'D:\\src\\CNTK_Faster_RCNN\\test_img\\' + a, 'D:\\src\\CNTK_Faster_RCNN\\test_img\\', cfg)
 
 

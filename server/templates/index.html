@@ -3,9 +3,38 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <h1>Hi There!!!</h1>
-        <p>Welcome to The Gallery</p>
-        <p><a href="#" class="login">Login</a> to upload images or head over to the <a href="{{ url_for('gallery') }}">gallery</a></p>
+        <h1>Landmark Building Detection</h1>
     </div>
+    <div class="row">
+        <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="images">File input</label>
+            <input type="file" id="images" name="images" accept="image/*" multiple>
+            <p class="help-block">Select Images to Upload.</p>
+            <input type="submit" value="Upload" class="btn btn-success">
+          </div>
+        </form>
+    </div>
+
+    <div class="row">
+        <h1>Gallery</h1>
+    </div>
+    {% if thumbnail_names %}
+      <div class="row">
+        {% for thumbnail_name in thumbnail_names %}
+        <div class="col-xs-6 col-md-3 img-div">
+            <img src="{{url_for('thumbnails', filename=thumbnail_name)}}" class="img-responsive thumb" data-toggle="modal" data-target="#image{{ loop.index0 }}" />
+            <div class="modal fade" id="image{{ loop.index0 }}" tabindex="-1" role="dialog" aria-labelledby="image{{ loop.index0 }}ModalLabel">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <img src="{{url_for('images', filename=thumbnail_name)}}" class="img-responsive" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    
 </div>
 {% endblock %}

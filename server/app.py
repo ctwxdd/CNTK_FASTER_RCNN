@@ -4,6 +4,24 @@ from PIL import Image
 from werkzeug.utils import secure_filename
 import os
 
+import numpy as np
+import cntk
+from cntk import load_model
+import sys
+sys.path.append("..")
+from FasterRCNN_train import prepare, train_faster_rcnn, store_eval_model_with_native_udf
+from FasterRCNN_eval import compute_test_set_aps, FasterRCNN_Evaluator
+sys.path.append("../utils")
+from utils.config_helpers import merge_configs
+from utils.plot_helpers import plot_test_set_results, plot_test_file_results
+
+def get_configuration():
+    from FasterRCNN_config import cfg as detector_cfg
+    from utils.configs.VGG16_config import cfg as network_cfg
+    from utils.configs.Building100_config import cfg as dataset_cfg
+
+    return merge_configs([detector_cfg, network_cfg, dataset_cfg])
+
 app = Flask(__name__)
 Bootstrap(app)
 
@@ -17,11 +35,18 @@ if not os.path.isdir(thumbnails_directory):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+
+    path = os.path.join(os.path.abspath(__file__), 'thumbnails')
+    print(path)
+    thumbnail_names = os.listdir(thumbnails_directory)
+    #return render_template('gallery.html', )
+    return render_template('index.html',thumbnail_names=thumbnail_names)
 
 @app.route('/gallery')
 def gallery():
-    thumbnail_names = os.listdir('./thumbnails')
+    path = os.path.join(os.path.abspath(__file__), 'thumbnails')
+    print(path)
+    thumbnail_names = os.listdir(thumbnails_directory)
     return render_template('gallery.html', thumbnail_names=thumbnail_names)
 
 @app.route('/thumbnails/<filename>')
@@ -51,13 +76,46 @@ def upload():
                 return render_template('error.html', message='Uploaded files are not supported...')
             destination = '/'.join([images_directory, filename])
             # Save original image
+
             upload.save(destination)
+            print('start detection')
+            img_path = plot_test_file_results(evaluator, destination, images_directory, cfg)
+            print('done detection')
             # Save a copy of the thumbnail image
-            image = Image.open(destination)
+
+            print(img_path)
+            #image = Image.open(destination)
+            image = Image.open(img_path)
+
+            if image.mode != "RGB":
+                image = image.convert("RGB")
+            
+            print('image_opened')
             image.thumbnail((300, 170))
-            image.save('/'.join([thumbnails_directory, filename]))
-        return redirect(url_for('gallery'))
+
+            result_filename = img_path.split('/')[-1]
+            image.save('/'.join([thumbnails_directory, result_filename]))
+        return redirect(url_for('index'))
     return render_template('upload.html')
 
 if __name__ == '__main__':
+
+    cfg = get_configuration()
+    prepare(cfg, False)
+    #cntk.device.try_set_default_device(cntk.device.gpu(cfg.GPU_ID))
+    cntk.device.try_set_default_device(cntk.device.cpu())
+    model_path = cfg['MODEL_PATH']
+    print(model_path)
+
+    if os.path.exists(model_path) and cfg["CNTK"].MAKE_MODE:
+        print("Loading existing model from %s" % model_path)
+        eval_model = load_model(model_path)
+    else:
+        print("No trained model found.")
+        exit()
+
+    # Plot results on test set images
+    results_folder = os.path.join(cfg.OUTPUT_PATH, cfg["DATA"].DATASET)
+    evaluator = FasterRCNN_Evaluator(eval_model, cfg)
+
     app.run(host='0.0.0.0', port=os.environ.get('PORT', 3000))

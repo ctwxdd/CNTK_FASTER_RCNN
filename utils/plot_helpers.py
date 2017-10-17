@@ -207,7 +207,11 @@ def plot_test_file_results(evaluator, path_to_file, results_base_path, cfg):
                                 classes=cfg["DATA"].CLASSES,
                                 draw_negative_rois=cfg.DRAW_NEGATIVE_ROIS,
                                 decision_threshold=cfg.RESULTS_BGR_PLOT_THRESHOLD)
-    imsave("{}/{}_regr_{}".format(results_base_path, 'result', os.path.basename(img_path)), img)
+    img_path = "{}/{}_regr_{}".format(results_base_path, 'result', os.path.basename(img_path))
+    
+    imsave(img_path, img)
+    return img_path 
+
 ####################################
 # helper library
 ####################################

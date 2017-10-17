@@ -113,3 +113,7 @@ test_img/*
 
 #model file
 *.model
+
+#uploaded file
+server/images/*
+server/thumbnails/*

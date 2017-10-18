@@ -16,8 +16,18 @@
         </form>
     </div>
 
+    <div class="row">
+    </div>
+    {% if image_result %}
+      <div class="row">
+        <div class="col-xs-6 col-md-3 img-div">
+            <img src="{{url_for('images', filename=image_result)}}"/>
+        </div>
+      </div>
+    {% endif %}
 
-    
+
+
     <div class="row">
         <h1>Gallery</h1>
     </div>

@@ -42,12 +42,14 @@ def index():
     #return render_template('gallery.html', )
     return render_template('index.html',thumbnail_names=thumbnail_names)
 
-@app.route('/gallery')
-def gallery():
+@app.route('/result/<filename>')
+def result(filename):
+
     path = os.path.join(os.path.abspath(__file__), 'thumbnails')
     print(path)
     thumbnail_names = os.listdir(thumbnails_directory)
-    return render_template('gallery.html', thumbnail_names=thumbnail_names)
+    #return render_template('gallery.html', )
+    return render_template('result.html',thumbnail_names=thumbnail_names, image_result= filename)
 
 @app.route('/thumbnails/<filename>')
 def thumbnails(filename):
@@ -95,8 +97,9 @@ def upload():
 
             result_filename = img_path.split('/')[-1]
             image.save('/'.join([thumbnails_directory, result_filename]))
-        return redirect(url_for('index'))
-    return render_template('upload.html')
+        #return redirect(url_for('index'))
+        return redirect(url_for('result', filename = result_filename))
+    return render_template('index.html')
 
 if __name__ == '__main__':
 

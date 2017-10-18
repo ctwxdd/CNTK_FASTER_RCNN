@@ -1,9 +1,3 @@
-# Copyright (c) Microsoft. All rights reserved.
-
-# Licensed under the MIT license. See LICENSE.md file in the project root
-# for full license information.
-# ==============================================================================
-
 import os
 import numpy as np
 import cntk
@@ -20,7 +14,6 @@ def get_configuration():
 
     return merge_configs([detector_cfg, network_cfg, dataset_cfg])
 
-# trains and evaluates a Fast R-CNN model.
 if __name__ == '__main__':
     cfg = get_configuration()
     prepare(cfg, False)
@@ -40,8 +33,7 @@ if __name__ == '__main__':
     results_folder = os.path.join(cfg.OUTPUT_PATH, cfg["DATA"].DATASET)
     evaluator = FasterRCNN_Evaluator(eval_model, cfg)
 
-    for i in range(2):
-        a = input("filename:")
-        plot_test_file_results(evaluator, 'D:\\src\\CNTK_Faster_RCNN\\test_img\\' + a, 'D:\\src\\CNTK_Faster_RCNN\\test_img\\', cfg)
+    a = 'image.jpg'
+    plot_test_file_results(evaluator, 'D:\\src\\CNTK_Faster_RCNN\\test_img\\' + a, 'D:\\src\\CNTK_Faster_RCNN\\test_img\\', cfg)
 
 

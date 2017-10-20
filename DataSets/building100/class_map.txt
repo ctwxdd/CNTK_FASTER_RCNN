@@ -1,0 +1,6 @@
+__background__	0
+Taiipei101	1
+Arc-de-Triomphe	2
+BigBen	3
+space_niddle	4
+Tokyo_tower	5

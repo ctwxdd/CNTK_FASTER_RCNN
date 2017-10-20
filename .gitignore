@@ -1,10 +1,10 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*.py[cod]
+*.py[co]
 *$py.class
 
 # C extensions
-*.so
+#*.so
 
 # Distribution / packaging
 .Python
@@ -104,7 +104,12 @@ venv.bak/
 .mypy_cache/
 
 # mypy
-DataSets/*
+DataSets/*/positive/*
+DataSets/*/negative/*
+DataSets/*/testImages/*
+DataSets/*/*.txt
+!DataSets/*/class_map.txt
+
 Output/*
 test_img/*
 

@@ -21,7 +21,7 @@ class ProposalLayer(UserFunction):
     '''
 
     def __init__(self, arg1, arg2, arg3, layer_config, name='ProposalLayer'):
-        super(ProposalLayer, self).__init__([arg1, arg2, arg3], attributes=layer_config, name=name)
+        super(ProposalLayer, self).__init__([arg1, arg2, arg3], layer_config, name=name)
 
         self._layer_config = layer_config
         self._feat_stride = 16 if 'feat_stride' not in layer_config else layer_config['feat_stride']

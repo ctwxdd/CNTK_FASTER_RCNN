@@ -106,7 +106,7 @@ if __name__ == '__main__':
     cfg = get_configuration()
     prepare(cfg, False)
     #cntk.device.try_set_default_device(cntk.device.gpu(cfg.GPU_ID))
-    cntk.device.try_set_default_device(cntk.device.cpu())
+    #cntk.device.try_set_default_device(cntk.device.cpu())
     model_path = cfg['MODEL_PATH']
     print(model_path)
 

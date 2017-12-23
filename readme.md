@@ -7,8 +7,7 @@
 #download vgg-16 by model by run 
 python ./model/downloadmodel.py VGG16_ImageNet_Caffe
 
-#download the Building100 dataset from
-https://microsoft-my.sharepoint.com/:u:/p/v-nicwu/EYgsPkHgsN5Ht2lKt6y5zc0BIfQuh063Ll8kwQvu7Log0w
+#download dataset from CNTK　repo
 
 #place the dataset under DataSets/building100 and run the annotation tool to generate class_map file
 python ./DataSets/annotations/annotations_helper.py
@@ -25,8 +24,6 @@ and copy the generated .so or pyd file into ./utils/Cython_modules
 #### Testing the model ###
 ##########################
 
-#download the trained model on Building100 dataset and place under ./Output/Building100
-https://microsoft-my.sharepoint.com/:u:/p/v-nicwu/EbzzpUPdfgdNiLmT5FcwRlABMtViEhXTrXMR-j6-iZvwdA
 
 #test on image files
 place the images to be tested in test_img and run python eval_from_file.py
